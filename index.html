@@ -12,6 +12,7 @@
   --naranja:#712B13;--naranja-bg:#FAECE7;
   --rojo:#791F1F;--rojo-bg:#FCEBEB;
   --violeta:#3C3489;--violeta-bg:#EEEDFE;
+  --azul:#1A3A5C;--azul-bg:#E8F0FA;
   --bg:#f8f7f5;--surface:#fff;--border:#e0ddd8;--text:#1a1a18;--muted:#6b6b67;
   --radius:10px;--radius-sm:6px;
 }
@@ -19,36 +20,39 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
 .logo{font-size:17px;font-weight:700;letter-spacing:-0.3px}
 .logo span{color:#D85A30}
-.header-right{display:flex;align-items:center;gap:8px}
-.badge-alerta{background:var(--rojo-bg);color:var(--rojo);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;min-width:24px;text-align:center}
+.header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .sync-dot{width:8px;height:8px;border-radius:50%;background:#ccc;display:inline-block;margin-right:4px}
-.sync-dot.ok{background:#4CAF50}
-.sync-dot.err{background:#f44336}
-.sync-dot.loading{background:#FF9800;animation:pulse 1s infinite}
+.sync-dot.ok{background:#4CAF50}.sync-dot.err{background:#f44336}.sync-dot.loading{background:#FF9800;animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.badge-alerta{background:var(--rojo-bg);color:var(--rojo);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;min-width:24px;text-align:center}
 .nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
-.nav-btn{flex:none;padding:12px 18px;font-size:13px;font-weight:500;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.nav-btn{flex:none;padding:12px 16px;font-size:13px;font-weight:500;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
 .nav-btn.active{color:var(--text);border-bottom-color:var(--text)}
-.panel{display:none;padding:16px;max-width:900px;margin:0 auto}
+.panel{display:none;padding:16px;max-width:960px;margin:0 auto}
 .panel.active{display:block}
+/* MÉTRICAS */
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
 .metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;text-align:center}
 .metric-label{font-size:11px;color:var(--muted);margin-bottom:4px}
-.metric-val{font-size:20px;font-weight:700}
+.metric-val{font-size:18px;font-weight:700}
+.metric-sub{font-size:10px;color:var(--muted);margin-top:2px}
+/* BUSCADOR */
 .search-wrap{display:flex;gap:8px;margin-bottom:12px}
 .search-input-wrap{position:relative;flex:1}
 .search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px;pointer-events:none}
 .search-input-wrap input{width:100%;padding:9px 10px 9px 34px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:var(--surface);color:var(--text)}
-select{padding:9px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;background:var(--surface);color:var(--text);min-width:0}
-.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:auto;-webkit-overflow-scrolling:touch}
-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px}
-th{padding:9px 10px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;background:var(--bg)}
-td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--text)}
+select{padding:9px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;background:var(--surface);color:var(--text)}
+/* TABLA */
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:700px}
+th{padding:8px 10px;text-align:left;font-size:11px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap;background:var(--bg)}
+td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#fafaf8}
 .prod-name{font-weight:600;font-size:13px}
 .prod-sub{font-size:11px;color:var(--muted)}
+/* BADGES */
 .badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
 .badge-ok{background:var(--verde-bg);color:var(--verde)}
 .badge-oferta{background:var(--amarillo-bg);color:var(--amarillo)}
@@ -56,21 +60,29 @@ tr:hover td{background:#fafaf8}
 .badge-costo{background:var(--rojo-bg);color:var(--rojo)}
 .badge-bajo{background:var(--violeta-bg);color:var(--violeta)}
 .badge-vencido{background:#500;color:#fff}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;font-size:13px;font-weight:500;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.badge-reponer{background:var(--azul-bg);color:var(--azul)}
+/* BOTONES */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;font-size:13px;font-weight:500;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);cursor:pointer}
 .btn:active{opacity:0.8}
 .btn-primary{background:var(--text);color:#fff;border-color:var(--text)}
 .btn-danger{color:var(--rojo);border-color:transparent;padding:5px 8px}
+.btn-success{background:#27500A;color:#fff;border-color:#27500A}
 .btn-sm{padding:5px 10px;font-size:12px}
+/* FORM */
 .form-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 .form-group{display:flex;flex-direction:column;gap:5px}
 .form-group label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.3px}
-.form-group input,.form-group select{padding:9px 11px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:var(--surface);color:var(--text);width:100%}
+.form-group input,.form-group select,.form-group textarea{padding:9px 11px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:var(--surface);color:var(--text);width:100%}
 .form-group input:focus,.form-group select:focus{outline:none;border-color:#888}
-.form-section-title{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
-.form-actions{display:flex;align-items:center;gap:12px;margin-top:16px}
+.form-section-title{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin:16px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.form-actions{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap}
 .msg-ok{color:var(--verde);font-size:13px;font-weight:500}
 .msg-err{color:var(--rojo);font-size:13px;font-weight:500}
+.calc-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;font-size:13px;margin-top:8px;color:var(--muted)}
+.calc-box strong{color:var(--text)}
+/* ALARMAS */
 .alarm-section{margin-bottom:12px}
 .alarm-header{font-size:13px;font-weight:700;padding:10px 14px;border-radius:var(--radius-sm) var(--radius-sm) 0 0;display:flex;align-items:center;gap:8px}
 .alarm-items{border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);background:var(--surface);overflow:hidden}
@@ -79,71 +91,105 @@ tr:hover td{background:#fafaf8}
 .alarm-name{font-weight:600}
 .alarm-detail{font-size:11px;color:var(--muted);margin-top:2px}
 .alarm-right{text-align:right;font-size:12px;color:var(--muted)}
+/* ESTADÍSTICAS */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
+.stat-title{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:8px}
+.stat-val{font-size:22px;font-weight:700;margin-bottom:2px}
+.stat-sub{font-size:12px;color:var(--muted)}
+.ranking-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
+.ranking-row:last-child{border-bottom:none}
+.ranking-num{font-size:11px;font-weight:700;color:var(--muted);width:20px}
+.ranking-name{flex:1;font-weight:500}
+.ranking-val{font-size:12px;color:var(--muted);text-align:right}
+/* MOVIMIENTOS */
+.mov-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.mov-row:last-child{border-bottom:none}
+.mov-tipo{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px}
+.mov-venta{background:#EAF3DE;color:#27500A}
+.mov-ingreso{background:#E8F0FA;color:#1A3A5C}
+.mov-ajuste{background:#FAEEDA;color:#633806}
+.mov-merma{background:#FCEBEB;color:#791F1F}
+/* LEYENDA */
 .leyenda-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .leyenda-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.leyenda-title{padding:10px 14px;font-size:13px;font-weight:600;border-bottom:1px solid var(--border);color:var(--muted);text-transform:uppercase;letter-spacing:0.3px}
-.leyenda-row{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);font-size:13px}
+.leyenda-title{padding:10px 14px;font-size:12px;font-weight:600;border-bottom:1px solid var(--border);color:var(--muted);text-transform:uppercase;letter-spacing:0.3px}
+.leyenda-row{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px}
 .leyenda-row:last-child{border-bottom:none}
 .leyenda-dias{color:var(--muted);font-size:12px;margin-left:auto}
-.leyenda-accion{font-weight:500}
-.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
-.empty-icon{font-size:40px;margin-bottom:10px}
-.empty-text{font-size:14px}
+/* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;align-items:center;justify-content:center;padding:16px}
 .modal-overlay.open{display:flex}
-.modal{background:var(--surface);border-radius:var(--radius);width:100%;max-width:480px;overflow:hidden}
-.modal-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border)}
+.modal{background:var(--surface);border-radius:var(--radius);width:100%;max-width:520px;overflow:hidden;max-height:90vh;display:flex;flex-direction:column}
+.modal-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
 .modal-title{font-weight:700;font-size:16px}
 .modal-close{font-size:22px;color:var(--muted);background:none;border:none;cursor:pointer;line-height:1;padding:2px 6px}
-.modal-body{padding:16px}
+.modal-body{padding:16px;overflow-y:auto}
+.modal-footer{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0;flex-wrap:wrap}
 .detail-row{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
 .detail-row:last-child{border-bottom:none}
 .detail-label{color:var(--muted);font-size:12px}
-.detail-val{font-weight:500;text-align:right;max-width:60%}
-.modal-footer{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1a1a18;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:300;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.detail-val{font-weight:500;text-align:right;max-width:65%}
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1a1a18;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:300;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
+/* EMPTY */
+.empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-icon{font-size:40px;margin-bottom:10px}
+.empty-text{font-size:14px}
+/* TABS internas */
+.inner-tabs{display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--border)}
+.inner-tab{padding:8px 14px;font-size:12px;font-weight:500;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer}
+.inner-tab.active{color:var(--text);border-bottom-color:var(--text)}
+/* RESPONSIVE */
 @media(max-width:600px){
   .metrics{grid-template-columns:repeat(2,1fr)}
-  .form-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr}
+  .form-grid,.form-grid-3{grid-template-columns:1fr}
   .leyenda-grid{grid-template-columns:1fr}
   .panel{padding:12px}
-  .metric-val{font-size:18px}
   .search-wrap{flex-direction:column}
   select{width:100%}
-  .col-lote,.col-precio,.col-ubicacion{display:none}
+  .col-lote,.col-precio,.col-prov{display:none}
 }
 </style>
 </head>
 <body>
+
 <div class="header">
   <div class="logo">Javi<span>card</span> <span style="font-weight:400;font-size:13px;color:var(--muted)">Depósito</span></div>
   <div class="header-right">
-    <span id="sync-status"><span class="sync-dot loading" id="sync-dot"></span><span id="sync-text" style="font-size:11px;color:var(--muted)">Conectando...</span></span>
+    <span><span class="sync-dot loading" id="sync-dot"></span><span id="sync-text" style="font-size:11px;color:var(--muted)">Conectando...</span></span>
     <span class="badge-alerta" id="hdr-alarmas">0</span>
     <button class="btn btn-sm" onclick="exportCSV()">⬇ CSV</button>
   </div>
 </div>
+
 <nav class="nav">
-  <button class="nav-btn active" onclick="tab('inventario',this)">Inventario</button>
+  <button class="nav-btn active" onclick="tab('inventario',this)">📦 Inventario</button>
   <button class="nav-btn" onclick="tab('agregar',this)">+ Agregar</button>
-  <button class="nav-btn" onclick="tab('alarmas',this)">Alarmas <span id="nav-badge" style="background:var(--rojo-bg);color:var(--rojo);font-size:10px;font-weight:700;padding:1px 6px;border-radius:20px;margin-left:2px">0</span></button>
-  <button class="nav-btn" onclick="tab('leyenda',this)">Leyenda</button>
+  <button class="nav-btn" onclick="tab('movimientos',this)">📋 Movimientos</button>
+  <button class="nav-btn" onclick="tab('alarmas',this)">🔔 Alarmas <span id="nav-badge" style="background:var(--rojo-bg);color:var(--rojo);font-size:10px;font-weight:700;padding:1px 6px;border-radius:20px;margin-left:2px">0</span></button>
+  <button class="nav-btn" onclick="tab('estadisticas',this)">📊 Estadísticas</button>
+  <button class="nav-btn" onclick="tab('leyenda',this)">📖 Leyenda</button>
 </nav>
+
+<!-- INVENTARIO -->
 <div class="panel active" id="panel-inventario">
   <div class="metrics">
     <div class="metric"><div class="metric-label">Productos</div><div class="metric-val" id="m-total">0</div></div>
+    <div class="metric"><div class="metric-label">Capital depósito</div><div class="metric-val" id="m-capital" style="font-size:14px">$0</div><div class="metric-sub">precio compra</div></div>
     <div class="metric"><div class="metric-label">Alerta depósito</div><div class="metric-val" style="color:var(--naranja)" id="m-dep">0</div></div>
     <div class="metric"><div class="metric-label">Alerta vencimiento</div><div class="metric-val" style="color:var(--rojo)" id="m-venc">0</div></div>
-    <div class="metric"><div class="metric-label">Stock total</div><div class="metric-val" id="m-stock">0</div></div>
   </div>
   <div class="search-wrap">
     <div class="search-input-wrap">
       <span class="search-icon">🔍</span>
-      <input type="text" id="busqueda" placeholder="Buscar por código o nombre..." oninput="filtrar()" autocomplete="off">
+      <input type="text" id="busqueda" placeholder="Buscar por código, nombre o proveedor..." oninput="filtrar()" autocomplete="off">
     </div>
     <select id="filtro" onchange="filtrar()">
       <option value="">Todos</option>
+      <option value="reponer">⚡ Reponer ya</option>
       <option value="ok">Sin alerta</option>
       <optgroup label="— Depósito —">
         <option value="oferta-dep">Oferta (dep.)</option>
@@ -154,7 +200,7 @@ tr:hover td{background:#fafaf8}
         <option value="oferta-venc">Oferta (venc.)</option>
         <option value="remate-venc">Remate (venc.)</option>
         <option value="costo-venc">Al costo (venc.)</option>
-        <option value="bajo-costo">Bajo costo (venc.)</option>
+        <option value="bajo-costo">Bajo costo</option>
       </optgroup>
     </select>
   </div>
@@ -164,12 +210,12 @@ tr:hover td{background:#fafaf8}
         <tr>
           <th>Producto</th>
           <th>Código</th>
-          <th class="col-lote">Lote</th>
+          <th class="col-lote">Lote/Fact.</th>
           <th style="text-align:center">Stock</th>
-          <th style="text-align:center">Días depósito</th>
+          <th style="text-align:center">Depósito</th>
           <th style="text-align:center">Vencimiento</th>
-          <th class="col-precio">P. compra</th>
-          <th class="col-ubicacion">Ubicación</th>
+          <th class="col-precio">P.Unit</th>
+          <th class="col-prov">Proveedor</th>
           <th></th>
         </tr>
       </thead>
@@ -181,56 +227,179 @@ tr:hover td{background:#fafaf8}
     </div>
   </div>
 </div>
+
+<!-- AGREGAR -->
 <div class="panel" id="panel-agregar">
   <div class="form-card">
     <div class="form-section-title">Identificación</div>
     <div class="form-grid">
-      <div class="form-group"><label>Código de barras *</label><input type="text" id="f-codigo" placeholder="Ej: 7790303000017" inputmode="numeric"></div>
+      <div class="form-group"><label>Código de barras</label><input type="text" id="f-codigo" placeholder="Ej: 7790303000017" inputmode="numeric"></div>
       <div class="form-group"><label>Nombre del producto *</label><input type="text" id="f-nombre" placeholder="Ej: Quilmes Clásica 1L"></div>
+      <div class="form-group"><label>Proveedor</label><input type="text" id="f-proveedor" placeholder="Ej: Distribuidora Norte"></div>
       <div class="form-group"><label>Lote / N° factura</label><input type="text" id="f-lote" placeholder="Ej: FAC-0042"></div>
       <div class="form-group"><label>Ubicación en depósito</label><input type="text" id="f-ubicacion" placeholder="Ej: Isla A3, Pallets C2"></div>
+      <div class="form-group">
+        <label>Tipo de unidad *</label>
+        <select id="f-tipo">
+          <option value="unidad">Unidad</option>
+          <option value="caja">Caja</option>
+          <option value="fardo">Fardo</option>
+          <option value="bandeja">Bandeja</option>
+          <option value="pallet">Pallet</option>
+          <option value="pack">Pack</option>
+        </select>
+      </div>
     </div>
-    <div class="form-section-title">Fechas</div>
+
+    <div class="form-section-title">Bulto y precio</div>
+    <div class="form-grid-3">
+      <div class="form-group"><label>Unidades por bulto *</label><input type="number" id="f-unxbulto" placeholder="Ej: 12" min="1" inputmode="numeric" oninput="calcPrecio()"></div>
+      <div class="form-group"><label>Precio por bulto ($) *</label><input type="number" id="f-preciobulto" placeholder="Ej: 33000" min="0" inputmode="decimal" oninput="calcPrecio()"></div>
+      <div class="form-group"><label>Precio de venta unit. ($)</label><input type="number" id="f-precioventa" placeholder="Ej: 3500" min="0" inputmode="decimal"></div>
+    </div>
+    <div class="calc-box" id="calc-box" style="display:none"></div>
+
+    <div class="form-section-title">Stock y fechas</div>
     <div class="form-grid">
+      <div class="form-group"><label>Stock en unidades *</label><input type="number" id="f-stock" placeholder="Ej: 600" min="0" inputmode="numeric"></div>
+      <div class="form-group"><label>Stock mínimo (reponer)</label><input type="number" id="f-stockmin" placeholder="Ej: 50" min="0" inputmode="numeric"></div>
       <div class="form-group"><label>Fecha de compra *</label><input type="date" id="f-compra"></div>
       <div class="form-group"><label>Fecha de vencimiento</label><input type="date" id="f-vencimiento"></div>
     </div>
-    <div class="form-section-title">Stock y precio</div>
-    <div class="form-grid">
-      <div class="form-group"><label>Stock (unidades) *</label><input type="number" id="f-stock" placeholder="Ej: 24" min="0" inputmode="numeric"></div>
-      <div class="form-group"><label>Precio de compra ($) *</label><input type="number" id="f-precio" placeholder="Ej: 1500" min="0" inputmode="decimal"></div>
-    </div>
+
     <div class="form-actions">
       <button class="btn btn-primary" onclick="agregarProducto()">✓ Agregar producto</button>
       <span id="msg-form"></span>
     </div>
   </div>
 </div>
+
+<!-- MOVIMIENTOS -->
+<div class="panel" id="panel-movimientos">
+  <div class="inner-tabs">
+    <button class="inner-tab active" onclick="innerTab('registrar',this)">Registrar movimiento</button>
+    <button class="inner-tab" onclick="innerTab('historial',this)">Historial</button>
+  </div>
+  <div id="inner-registrar">
+    <div class="form-card">
+      <div class="form-section-title">Nuevo movimiento</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Producto *</label>
+          <select id="m-producto"><option value="">Seleccionar...</option></select>
+        </div>
+        <div class="form-group">
+          <label>Tipo *</label>
+          <select id="m-tipo">
+            <option value="venta">🟢 Venta</option>
+            <option value="ingreso">🔵 Ingreso de mercadería</option>
+            <option value="ajuste">🟡 Ajuste de stock</option>
+            <option value="merma">🔴 Merma / pérdida</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Cantidad (unidades) *</label>
+          <input type="number" id="m-cantidad" placeholder="Ej: 12" min="1" inputmode="numeric" oninput="calcMovimiento()">
+        </div>
+        <div class="form-group">
+          <label>Precio unitario ($)</label>
+          <input type="number" id="m-precio" placeholder="Auto desde producto" min="0" inputmode="decimal">
+        </div>
+        <div class="form-group">
+          <label>Fecha</label>
+          <input type="date" id="m-fecha">
+        </div>
+        <div class="form-group">
+          <label>Nota (opcional)</label>
+          <input type="text" id="m-nota" placeholder="Ej: Venta mostrador">
+        </div>
+      </div>
+      <div class="calc-box" id="calc-mov" style="display:none"></div>
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="registrarMovimiento()">✓ Registrar</button>
+        <span id="msg-mov"></span>
+      </div>
+    </div>
+  </div>
+  <div id="inner-historial" style="display:none">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Fecha</th><th>Producto</th><th>Tipo</th><th style="text-align:center">Cant.</th><th>Total</th><th>Nota</th></tr></thead>
+        <tbody id="tbody-mov"></tbody>
+      </table>
+      <div id="empty-mov" class="empty-state" style="display:none"><div class="empty-icon">📋</div><div class="empty-text">Sin movimientos registrados.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ALARMAS -->
 <div class="panel" id="panel-alarmas">
   <div id="alarmas-container"><div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">Sin alarmas activas.</div></div></div>
 </div>
+
+<!-- ESTADÍSTICAS -->
+<div class="panel" id="panel-estadisticas">
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-title">💰 Capital en depósito</div><div class="stat-val" id="st-capital">$0</div><div class="stat-sub">precio de compra × stock</div></div>
+    <div class="stat-card"><div class="stat-title">📈 Ventas del mes</div><div class="stat-val" id="st-ventas-mes">$0</div><div class="stat-sub" id="st-ventas-uni">0 unidades</div></div>
+    <div class="stat-card"><div class="stat-title">📦 Total productos</div><div class="stat-val" id="st-prods">0</div><div class="stat-sub" id="st-stock-total">0 unidades en stock</div></div>
+  </div>
+  <div class="form-grid" style="margin-bottom:16px">
+    <div class="stat-card">
+      <div class="stat-title">🏆 Más vendidos (mes)</div>
+      <div id="st-mas-vendidos"><div style="color:var(--muted);font-size:13px">Sin ventas registradas</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">⏱ Más tiempo en depósito</div>
+      <div id="st-mas-tiempo"><div style="color:var(--muted);font-size:13px">Sin productos</div></div>
+    </div>
+  </div>
+  <div class="form-grid">
+    <div class="stat-card">
+      <div class="stat-title">📅 Próximos a vencer (30d)</div>
+      <div id="st-proximos-vencer"><div style="color:var(--muted);font-size:13px">Sin productos con vencimiento</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">⚡ Stock bajo mínimo</div>
+      <div id="st-bajo-minimo"><div style="color:var(--muted);font-size:13px">Todo en orden</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- LEYENDA -->
 <div class="panel" id="panel-leyenda">
   <div class="leyenda-grid">
     <div class="leyenda-card">
       <div class="leyenda-title">⏱ Días en depósito</div>
-      <div class="leyenda-row"><span class="badge badge-ok">OK</span><span class="leyenda-accion">Normal</span><span class="leyenda-dias">&lt; 15 días</span></div>
-      <div class="leyenda-row"><span class="badge badge-oferta">OFERTA</span><span class="leyenda-accion">Hacer oferta</span><span class="leyenda-dias">15–29 días</span></div>
-      <div class="leyenda-row"><span class="badge badge-remate">REMATE</span><span class="leyenda-accion">Rematar</span><span class="leyenda-dias">30–44 días</span></div>
-      <div class="leyenda-row"><span class="badge badge-costo">AL COSTO</span><span class="leyenda-accion">Vender al costo</span><span class="leyenda-dias">45+ días</span></div>
+      <div class="leyenda-row"><span class="badge badge-ok">OK</span><span style="font-weight:500">Normal</span><span class="leyenda-dias">&lt; 15 días</span></div>
+      <div class="leyenda-row"><span class="badge badge-oferta">OFERTA</span><span style="font-weight:500">Hacer oferta</span><span class="leyenda-dias">15–29 días</span></div>
+      <div class="leyenda-row"><span class="badge badge-remate">REMATE</span><span style="font-weight:500">Rematar</span><span class="leyenda-dias">30–44 días</span></div>
+      <div class="leyenda-row"><span class="badge badge-costo">AL COSTO</span><span style="font-weight:500">Vender al costo</span><span class="leyenda-dias">45+ días</span></div>
     </div>
     <div class="leyenda-card">
       <div class="leyenda-title">📅 Días para vencer</div>
-      <div class="leyenda-row"><span class="badge badge-ok">OK</span><span class="leyenda-accion">Normal</span><span class="leyenda-dias">&gt; 30 días</span></div>
-      <div class="leyenda-row"><span class="badge badge-oferta">OFERTA</span><span class="leyenda-accion">Hacer oferta</span><span class="leyenda-dias">16–30 días</span></div>
-      <div class="leyenda-row"><span class="badge badge-remate">REMATE</span><span class="leyenda-accion">Rematar</span><span class="leyenda-dias">11–15 días</span></div>
-      <div class="leyenda-row"><span class="badge badge-costo">AL COSTO</span><span class="leyenda-accion">Vender al costo</span><span class="leyenda-dias">6–10 días</span></div>
-      <div class="leyenda-row"><span class="badge badge-bajo">BAJO COSTO</span><span class="leyenda-accion">Vender bajo costo</span><span class="leyenda-dias">≤ 5 días</span></div>
+      <div class="leyenda-row"><span class="badge badge-ok">OK</span><span style="font-weight:500">Normal</span><span class="leyenda-dias">&gt; 30 días</span></div>
+      <div class="leyenda-row"><span class="badge badge-oferta">OFERTA</span><span style="font-weight:500">Hacer oferta</span><span class="leyenda-dias">16–30 días</span></div>
+      <div class="leyenda-row"><span class="badge badge-remate">REMATE</span><span style="font-weight:500">Rematar</span><span class="leyenda-dias">11–15 días</span></div>
+      <div class="leyenda-row"><span class="badge badge-costo">AL COSTO</span><span style="font-weight:500">Vender al costo</span><span class="leyenda-dias">6–10 días</span></div>
+      <div class="leyenda-row"><span class="badge badge-bajo">BAJO COSTO</span><span style="font-weight:500">Vender bajo costo</span><span class="leyenda-dias">≤ 5 días</span></div>
+    </div>
+    <div class="leyenda-card">
+      <div class="leyenda-title">📋 Tipos de movimiento</div>
+      <div class="leyenda-row"><span class="mov-tipo mov-venta">Venta</span><span style="font-weight:500">Resta del stock</span></div>
+      <div class="leyenda-row"><span class="mov-tipo mov-ingreso">Ingreso</span><span style="font-weight:500">Suma al stock</span></div>
+      <div class="leyenda-row"><span class="mov-tipo mov-ajuste">Ajuste</span><span style="font-weight:500">Corrige stock</span></div>
+      <div class="leyenda-row"><span class="mov-tipo mov-merma">Merma</span><span style="font-weight:500">Pérdida/rotura</span></div>
+    </div>
+    <div class="leyenda-card">
+      <div class="leyenda-title">⚡ Stock bajo mínimo</div>
+      <div class="leyenda-row"><span class="badge badge-reponer">REPONER</span><span style="font-weight:500">Stock ≤ mínimo definido</span></div>
+      <div class="leyenda-row" style="font-size:12px;color:var(--muted)">Definís el mínimo por producto al cargarlo. Cuando el stock baja de ese número aparece la alerta de reposición.</div>
     </div>
   </div>
-  <div style="margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;font-size:13px;color:var(--muted);line-height:1.6">
-    <strong style="color:var(--text)">Sincronización:</strong> Los datos se guardan en Firebase. Cualquier cambio desde el celu se ve en la PC automáticamente.
-  </div>
 </div>
+
+<!-- MODAL DETALLE/EDITAR -->
 <div class="modal-overlay" id="modal-overlay" onclick="cerrarModal(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
@@ -238,25 +407,36 @@ tr:hover td{background:#fafaf8}
       <button class="modal-close" onclick="cerrarModal()">×</button>
     </div>
     <div class="modal-body" id="modal-body"></div>
-    <div class="modal-footer">
-      <button class="btn btn-danger btn-sm" id="modal-eliminar-btn">🗑 Eliminar</button>
-      <button class="btn btn-sm" onclick="cerrarModal()">Cerrar</button>
-    </div>
+    <div class="modal-footer" id="modal-footer"></div>
   </div>
 </div>
+
 <div class="toast" id="toast"></div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, push, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, onValue, push, remove, update, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
 const firebaseConfig={apiKey:"AIzaSyCeHIwunMK18soUCI2xTKxsF3VvySud3tE",authDomain:"javicard-deposito.firebaseapp.com",databaseURL:"https://javicard-deposito-default-rtdb.firebaseio.com",projectId:"javicard-deposito",storageBucket:"javicard-deposito.firebasestorage.app",messagingSenderId:"276610499069",appId:"1:276610499069:web:2f888100e183fb15e95994"};
 const app=initializeApp(firebaseConfig);
 const db=getDatabase(app);
-const dbRef=ref(db,'productos');
-var productos={};
-var HOY=new Date();HOY.setHours(0,0,0,0);
+const prodRef=ref(db,'productos');
+const movRef=ref(db,'movimientos');
+
+var productos={}, movimientos={};
+var HOY=new Date(); HOY.setHours(0,0,0,0);
+
+// SYNC STATUS
 function setSyncStatus(e){var d=document.getElementById('sync-dot'),t=document.getElementById('sync-text');d.className='sync-dot '+e;t.textContent=e==='ok'?'Sincronizado':e==='err'?'Sin conexión':'Conectando...';}
-function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2000);}
-onValue(dbRef,function(s){productos={};if(s.exists())productos=s.val();setSyncStatus('ok');actualizar();},function(){setSyncStatus('err');});
+
+// TOAST
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
+
+// FIREBASE LISTENERS
+onValue(prodRef,function(s){productos={};if(s.exists())productos=s.val();setSyncStatus('ok');actualizar();poblarSelectProducto();},function(){setSyncStatus('err');});
+onValue(movRef,function(s){movimientos={};if(s.exists())movimientos=s.val();renderHistorial();renderEstadisticas();});
+
+// HELPERS
 function diasDesde(f){var d=new Date(f+'T00:00:00');return Math.floor((HOY-d)/86400000);}
 function diasHasta(f){if(!f)return null;var d=new Date(f+'T00:00:00');return Math.floor((d-HOY)/86400000);}
 function alarmaDep(dd){if(dd<15)return{tipo:'ok',label:'OK',cls:'badge-ok'};if(dd<30)return{tipo:'oferta-dep',label:'OFERTA',cls:'badge-oferta'};if(dd<45)return{tipo:'remate-dep',label:'REMATE',cls:'badge-remate'};return{tipo:'costo-dep',label:'AL COSTO',cls:'badge-costo'};}
@@ -265,18 +445,382 @@ function urgencia(ad,av){var o={vencido:0,'bajo-costo':1,'costo-dep':2,'costo-ve
 function formatF(s){if(!s)return'—';var p=s.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
 function formatP(n){if(!n&&n!==0)return'—';return'$'+Number(n).toLocaleString('es-AR');}
 function getLista(){return Object.entries(productos).map(function(e){return Object.assign({_key:e[0]},e[1]);});}
-function actualizar(){var lista=getLista(),total=0,dep=0,venc=0,stock=0;lista.forEach(function(p){total++;stock+=Number(p.stock)||0;var ad=alarmaDep(diasDesde(p.compra));var av=alarmaVenc(diasHasta(p.vencimiento));if(ad.tipo!=='ok')dep++;if(av&&av.tipo!=='ok-venc')venc++;});document.getElementById('m-total').textContent=total;document.getElementById('m-dep').textContent=dep;document.getElementById('m-venc').textContent=venc;document.getElementById('m-stock').textContent=stock;var tot=dep+venc;document.getElementById('hdr-alarmas').textContent=tot;document.getElementById('nav-badge').textContent=tot;filtrar();renderAlarmas();}
-function filtrar(){var q=(document.getElementById('busqueda').value||'').toLowerCase(),f=document.getElementById('filtro').value;var lista=getLista().filter(function(p){var mq=!q||(p.codigo||'').toLowerCase().includes(q)||p.nombre.toLowerCase().includes(q);if(!mq)return false;if(!f)return true;var ad=alarmaDep(diasDesde(p.compra));var av=alarmaVenc(diasHasta(p.vencimiento));if(f==='ok')return ad.tipo==='ok'&&(!av||av.tipo==='ok-venc');if(f===ad.tipo)return true;if(av&&f===av.tipo)return true;return false;});renderTabla(lista);}
-function renderTabla(lista){var tbody=document.getElementById('tbody'),empty=document.getElementById('empty-inv');if(!lista.length){tbody.innerHTML='';empty.style.display='block';return;}empty.style.display='none';tbody.innerHTML=lista.map(function(p){var dd=diasDesde(p.compra),ad=alarmaDep(dd),dv=diasHasta(p.vencimiento),av=alarmaVenc(dv);var vH=av?(av.tipo==='vencido'?'<span class="badge badge-vencido">VENCIDO</span>':'<span class="badge '+av.cls+'">'+av.label+'</span> <span style="color:var(--muted);font-size:11px">'+dv+'d</span>'):'<span style="color:var(--muted)">—</span>';return'<tr onclick="verDetalle(\''+p._key+'\')" style="cursor:pointer"><td><div class="prod-name">'+p.nombre+'</div><div class="prod-sub">'+(p.codigo||'')+'</div></td><td class="col-lote" style="font-size:11px;color:var(--muted)">'+(p.lote||'—')+'</td><td style="text-align:center;font-weight:600">'+p.stock+'</td><td style="text-align:center"><span class="badge '+ad.cls+'">'+ad.label+'</span><br><span style="font-size:11px;color:var(--muted)">'+dd+'d</span></td><td style="text-align:center">'+vH+'</td><td class="col-precio" style="font-size:12px">'+formatP(p.precio)+'</td><td class="col-ubicacion" style="font-size:12px;color:var(--muted)">'+(p.ubicacion||'—')+'</td><td><button class="btn btn-danger btn-sm" onclick="event.stopPropagation();eliminar(\''+p._key+'\')">🗑</button></td></tr>';}).join('');}
-function renderAlarmas(){var c=document.getElementById('alarmas-container'),grupos={};var cfg={'vencido':{label:'🚨 Producto vencido — retirar',bg:'#500',tc:'#fff'},'bajo-costo':{label:'🔴 Vender BAJO el costo (vence ≤5d)',bg:'var(--violeta-bg)',tc:'var(--violeta)'},'costo-venc':{label:'🔴 Vender al costo (vence 6–10d)',bg:'var(--rojo-bg)',tc:'var(--rojo)'},'costo-dep':{label:'🔴 Vender al costo (45+ días depósito)',bg:'var(--rojo-bg)',tc:'var(--rojo)'},'remate-venc':{label:'🟠 Rematar (vence 11–15d)',bg:'var(--naranja-bg)',tc:'var(--naranja)'},'remate-dep':{label:'🟠 Rematar (30–44d depósito)',bg:'var(--naranja-bg)',tc:'var(--naranja)'},'oferta-venc':{label:'🟡 Hacer oferta (vence 16–30d)',bg:'var(--amarillo-bg)',tc:'var(--amarillo)'},'oferta-dep':{label:'🟡 Hacer oferta (15–29d depósito)',bg:'var(--amarillo-bg)',tc:'var(--amarillo)'}};var orden=['vencido','bajo-costo','costo-venc','costo-dep','remate-venc','remate-dep','oferta-venc','oferta-dep'];getLista().forEach(function(p){var dd=diasDesde(p.compra),ad=alarmaDep(dd),dv=diasHasta(p.vencimiento),av=alarmaVenc(dv);function push(t,d){if(!grupos[t])grupos[t]=[];grupos[t].push({p:p,detalle:d});}if(ad.tipo!=='ok')push(ad.tipo,dd+'d en depósito');if(av&&av.tipo!=='ok-venc')push(av.tipo,av.tipo==='vencido'?'Vencido hace '+Math.abs(dv)+'d':'Vence en '+dv+'d');});var tipos=orden.filter(function(t){return grupos[t]&&grupos[t].length;});if(!tipos.length){c.innerHTML='<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">Sin alarmas. Todo en orden.</div></div>';return;}c.innerHTML=tipos.map(function(t){var cf=cfg[t],it=grupos[t];return'<div class="alarm-section"><div class="alarm-header" style="background:'+cf.bg+';color:'+cf.tc+'">'+cf.label+' <span style="margin-left:auto;font-size:12px;opacity:0.8">'+it.length+'</span></div><div class="alarm-items">'+it.map(function(x){return'<div class="alarm-item"><div><div class="alarm-name">'+x.p.nombre+'</div><div class="alarm-detail">'+(x.p.codigo||'')+(x.p.lote?' · '+x.p.lote:'')+'</div></div><div class="alarm-right">Stock: <strong>'+x.p.stock+'</strong><br>'+x.detalle+'</div></div>';}).join('')+'</div></div>';}).join('');}
-window.verDetalle=function(key){var p=productos[key];if(!p)return;var dd=diasDesde(p.compra),ad=alarmaDep(dd),dv=diasHasta(p.vencimiento),av=alarmaVenc(dv),ap=av?urgencia(ad,av):ad;document.getElementById('modal-nombre').textContent=p.nombre;document.getElementById('modal-body').innerHTML='<div class="detail-row"><span class="detail-label">Estado</span><span class="detail-val"><span class="badge '+ap.cls+'">'+ap.label+'</span></span></div><div class="detail-row"><span class="detail-label">Código</span><span class="detail-val">'+(p.codigo||'—')+'</span></div><div class="detail-row"><span class="detail-label">Lote</span><span class="detail-val">'+(p.lote||'—')+'</span></div><div class="detail-row"><span class="detail-label">Ubicación</span><span class="detail-val">'+(p.ubicacion||'—')+'</span></div><div class="detail-row"><span class="detail-label">Stock</span><span class="detail-val">'+p.stock+' unidades</span></div><div class="detail-row"><span class="detail-label">Precio compra</span><span class="detail-val">'+formatP(p.precio)+'</span></div><div class="detail-row"><span class="detail-label">Fecha compra</span><span class="detail-val">'+formatF(p.compra)+'</span></div><div class="detail-row"><span class="detail-label">Días en depósito</span><span class="detail-val">'+dd+'d <span class="badge '+ad.cls+'" style="font-size:10px">'+ad.label+'</span></span></div>'+(p.vencimiento?'<div class="detail-row"><span class="detail-label">Vencimiento</span><span class="detail-val">'+formatF(p.vencimiento)+(av?' <span class="badge '+av.cls+'" style="font-size:10px">'+av.label+'</span>':'')+'</span></div>':'')+( p.vencimiento&&dv!==null?'<div class="detail-row"><span class="detail-label">Días para vencer</span><span class="detail-val">'+(dv<0?'Vencido hace '+Math.abs(dv)+'d':dv+'d')+'</span></div>':'');document.getElementById('modal-eliminar-btn').onclick=function(){if(confirm('¿Eliminar '+p.nombre+'?')){remove(ref(db,'productos/'+key));cerrarModal();toast('Eliminado');}};document.getElementById('modal-overlay').classList.add('open');};
+function getMesActual(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0');}
+
+// CÁLCULO PRECIO
+window.calcPrecio=function(){
+  var u=Number(document.getElementById('f-unxbulto').value)||0;
+  var p=Number(document.getElementById('f-preciobulto').value)||0;
+  var box=document.getElementById('calc-box');
+  if(u>0&&p>0){
+    var unit=p/u;
+    box.style.display='block';
+    box.innerHTML='💡 Precio unitario: <strong>'+formatP(unit)+'</strong> &nbsp;|&nbsp; Bulto de '+u+' unidades a '+formatP(p);
+  }else{box.style.display='none';}
+};
+
+// CÁLCULO MOVIMIENTO
+window.calcMovimiento=function(){
+  var cant=Number(document.getElementById('m-cantidad').value)||0;
+  var precio=Number(document.getElementById('m-precio').value)||0;
+  var box=document.getElementById('calc-mov');
+  if(cant>0&&precio>0){
+    box.style.display='block';
+    box.innerHTML='💰 Total del movimiento: <strong>'+formatP(cant*precio)+'</strong>';
+  }else{box.style.display='none';}
+};
+
+// ACTUALIZAR DASHBOARD
+function actualizar(){
+  var lista=getLista();
+  var total=0,dep=0,venc=0,capital=0;
+  lista.forEach(function(p){
+    total++;
+    var precUnit=p.preciobulto&&p.unxbulto?p.preciobulto/p.unxbulto:0;
+    capital+=precUnit*(Number(p.stock)||0);
+    var ad=alarmaDep(diasDesde(p.compra));
+    var av=alarmaVenc(diasHasta(p.vencimiento));
+    if(ad.tipo!=='ok')dep++;
+    if(av&&av.tipo!=='ok-venc')venc++;
+  });
+  document.getElementById('m-total').textContent=total;
+  document.getElementById('m-capital').textContent=formatP(Math.round(capital));
+  document.getElementById('m-dep').textContent=dep;
+  document.getElementById('m-venc').textContent=venc;
+  var tot=dep+venc;
+  document.getElementById('hdr-alarmas').textContent=tot;
+  document.getElementById('nav-badge').textContent=tot;
+  filtrar();
+  renderAlarmas();
+  renderEstadisticas();
+}
+
+// FILTRAR
+function filtrar(){
+  var q=(document.getElementById('busqueda').value||'').toLowerCase();
+  var f=document.getElementById('filtro').value;
+  var lista=getLista().filter(function(p){
+    var mq=!q||(p.codigo||'').toLowerCase().includes(q)||p.nombre.toLowerCase().includes(q)||(p.proveedor||'').toLowerCase().includes(q);
+    if(!mq)return false;
+    if(!f)return true;
+    if(f==='reponer')return p.stockmin&&Number(p.stock)<=Number(p.stockmin);
+    var ad=alarmaDep(diasDesde(p.compra));
+    var av=alarmaVenc(diasHasta(p.vencimiento));
+    if(f==='ok')return ad.tipo==='ok'&&(!av||av.tipo==='ok-venc')&&!(p.stockmin&&Number(p.stock)<=Number(p.stockmin));
+    if(f===ad.tipo)return true;
+    if(av&&f===av.tipo)return true;
+    return false;
+  });
+  renderTabla(lista);
+}
+window.filtrar=filtrar;
+
+// RENDER TABLA
+function renderTabla(lista){
+  var tbody=document.getElementById('tbody'),empty=document.getElementById('empty-inv');
+  if(!lista.length){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  tbody.innerHTML=lista.map(function(p){
+    var dd=diasDesde(p.compra),ad=alarmaDep(dd);
+    var dv=diasHasta(p.vencimiento),av=alarmaVenc(dv);
+    var vH=av?(av.tipo==='vencido'?'<span class="badge badge-vencido">VENCIDO</span>':'<span class="badge '+av.cls+'">'+av.label+'</span><br><span style="font-size:10px;color:var(--muted)">'+dv+'d</span>'):'<span style="color:var(--muted)">—</span>';
+    var precUnit=p.preciobulto&&p.unxbulto?p.preciobulto/p.unxbulto:0;
+    var stockBadge=p.stockmin&&Number(p.stock)<=Number(p.stockmin)?'<br><span class="badge badge-reponer" style="font-size:10px">REPONER</span>':'';
+    return'<tr onclick="verDetalle(\''+p._key+'\')" style="cursor:pointer">'+
+      '<td><div class="prod-name">'+p.nombre+'</div><div class="prod-sub">'+(p.tipo||'unidad')+(p.unxbulto?' · '+p.unxbulto+'/bulto':'')+'</div></td>'+
+      '<td style="font-size:11px;color:var(--muted)">'+(p.codigo||'—')+'</td>'+
+      '<td class="col-lote" style="font-size:11px;color:var(--muted)">'+(p.lote||'—')+'</td>'+
+      '<td style="text-align:center;font-weight:600">'+p.stock+'<span style="font-size:10px;color:var(--muted);display:block">unid.</span>'+stockBadge+'</td>'+
+      '<td style="text-align:center"><span class="badge '+ad.cls+'">'+ad.label+'</span><br><span style="font-size:10px;color:var(--muted)">'+dd+'d</span></td>'+
+      '<td style="text-align:center">'+vH+'</td>'+
+      '<td class="col-precio" style="font-size:12px">'+(precUnit?formatP(Math.round(precUnit)):'—')+'</td>'+
+      '<td class="col-prov" style="font-size:11px;color:var(--muted)">'+(p.proveedor||'—')+'</td>'+
+      '<td><button class="btn btn-danger btn-sm" onclick="event.stopPropagation();eliminar(\''+p._key+'\')">🗑</button></td>'+
+      '</tr>';
+  }).join('');
+}
+
+// RENDER ALARMAS
+function renderAlarmas(){
+  var c=document.getElementById('alarmas-container'),grupos={};
+  var cfg={
+    'reponer':{label:'⚡ Reponer urgente — stock bajo mínimo',bg:'var(--azul-bg)',tc:'var(--azul)'},
+    'vencido':{label:'🚨 Producto vencido — retirar',bg:'#500',tc:'#fff'},
+    'bajo-costo':{label:'🔴 Vender BAJO el costo (vence ≤5d)',bg:'var(--violeta-bg)',tc:'var(--violeta)'},
+    'costo-venc':{label:'🔴 Vender al costo (vence 6–10d)',bg:'var(--rojo-bg)',tc:'var(--rojo)'},
+    'costo-dep':{label:'🔴 Vender al costo (45+ días depósito)',bg:'var(--rojo-bg)',tc:'var(--rojo)'},
+    'remate-venc':{label:'🟠 Rematar (vence 11–15d)',bg:'var(--naranja-bg)',tc:'var(--naranja)'},
+    'remate-dep':{label:'🟠 Rematar (30–44d depósito)',bg:'var(--naranja-bg)',tc:'var(--naranja)'},
+    'oferta-venc':{label:'🟡 Hacer oferta (vence 16–30d)',bg:'var(--amarillo-bg)',tc:'var(--amarillo)'},
+    'oferta-dep':{label:'🟡 Hacer oferta (15–29d depósito)',bg:'var(--amarillo-bg)',tc:'var(--amarillo)'}
+  };
+  var orden=['reponer','vencido','bajo-costo','costo-venc','costo-dep','remate-venc','remate-dep','oferta-venc','oferta-dep'];
+  getLista().forEach(function(p){
+    function push(t,d){if(!grupos[t])grupos[t]=[];grupos[t].push({p:p,detalle:d});}
+    if(p.stockmin&&Number(p.stock)<=Number(p.stockmin))push('reponer','Stock: '+p.stock+' / Mín: '+p.stockmin);
+    var dd=diasDesde(p.compra),ad=alarmaDep(dd);
+    var dv=diasHasta(p.vencimiento),av=alarmaVenc(dv);
+    if(ad.tipo!=='ok')push(ad.tipo,dd+'d en depósito');
+    if(av&&av.tipo!=='ok-venc')push(av.tipo,av.tipo==='vencido'?'Vencido hace '+Math.abs(dv)+'d':'Vence en '+dv+'d');
+  });
+  var tipos=orden.filter(function(t){return grupos[t]&&grupos[t].length;});
+  if(!tipos.length){c.innerHTML='<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">Sin alarmas activas. Todo en orden.</div></div>';return;}
+  c.innerHTML=tipos.map(function(t){
+    var cf=cfg[t],it=grupos[t];
+    return'<div class="alarm-section"><div class="alarm-header" style="background:'+cf.bg+';color:'+cf.tc+'">'+cf.label+' <span style="margin-left:auto;font-size:12px;opacity:0.8">'+it.length+'</span></div><div class="alarm-items">'+
+      it.map(function(x){return'<div class="alarm-item"><div><div class="alarm-name">'+x.p.nombre+'</div><div class="alarm-detail">'+(x.p.proveedor?x.p.proveedor+' · ':'')+(x.p.ubicacion||'')+'</div></div><div class="alarm-right">'+x.detalle+'</div></div>';}).join('')+'</div></div>';
+  }).join('');
+}
+
+// RENDER ESTADÍSTICAS
+function renderEstadisticas(){
+  var lista=getLista();
+  var capital=0,stockTotal=0;
+  lista.forEach(function(p){
+    var pu=p.preciobulto&&p.unxbulto?p.preciobulto/p.unxbulto:0;
+    capital+=pu*(Number(p.stock)||0);
+    stockTotal+=Number(p.stock)||0;
+  });
+  document.getElementById('st-capital').textContent=formatP(Math.round(capital));
+  document.getElementById('st-prods').textContent=lista.length;
+  document.getElementById('st-stock-total').textContent=stockTotal.toLocaleString('es-AR')+' unidades en stock';
+
+  // Ventas del mes
+  var mes=getMesActual();
+  var ventasMes=0,unidadesMes=0,ventasPorProd={};
+  Object.values(movimientos).forEach(function(m){
+    if(m.tipo==='venta'&&m.fecha&&m.fecha.startsWith(mes)){
+      ventasMes+=(m.precio||0)*(m.cantidad||0);
+      unidadesMes+=Number(m.cantidad)||0;
+      if(!ventasPorProd[m.productoKey])ventasPorProd[m.productoKey]=0;
+      ventasPorProd[m.productoKey]+=Number(m.cantidad)||0;
+    }
+  });
+  document.getElementById('st-ventas-mes').textContent=formatP(Math.round(ventasMes));
+  document.getElementById('st-ventas-uni').textContent=unidadesMes.toLocaleString('es-AR')+' unidades';
+
+  // Más vendidos
+  var masVendidos=Object.entries(ventasPorProd).sort(function(a,b){return b[1]-a[1];}).slice(0,5);
+  document.getElementById('st-mas-vendidos').innerHTML=masVendidos.length?masVendidos.map(function(e,i){
+    var p=productos[e[0]];var nombre=p?p.nombre:e[0];
+    return'<div class="ranking-row"><span class="ranking-num">'+(i+1)+'</span><span class="ranking-name">'+nombre+'</span><span class="ranking-val">'+e[1]+' u.</span></div>';
+  }).join(''):'<div style="color:var(--muted);font-size:13px">Sin ventas este mes</div>';
+
+  // Más tiempo en depósito
+  var porTiempo=lista.filter(function(p){return p.compra;}).sort(function(a,b){return diasDesde(b.compra)-diasDesde(a.compra);}).slice(0,5);
+  document.getElementById('st-mas-tiempo').innerHTML=porTiempo.length?porTiempo.map(function(p,i){
+    var dd=diasDesde(p.compra),ad=alarmaDep(dd);
+    return'<div class="ranking-row"><span class="ranking-num">'+(i+1)+'</span><span class="ranking-name">'+p.nombre+'</span><span class="ranking-val"><span class="badge '+ad.cls+'" style="font-size:10px">'+ad.label+'</span> '+dd+'d</span></div>';
+  }).join(''):'<div style="color:var(--muted);font-size:13px">Sin datos</div>';
+
+  // Próximos a vencer
+  var proxVencer=lista.filter(function(p){return p.vencimiento&&diasHasta(p.vencimiento)!==null&&diasHasta(p.vencimiento)>=0&&diasHasta(p.vencimiento)<=30;}).sort(function(a,b){return diasHasta(a.vencimiento)-diasHasta(b.vencimiento);}).slice(0,5);
+  document.getElementById('st-proximos-vencer').innerHTML=proxVencer.length?proxVencer.map(function(p,i){
+    var dv=diasHasta(p.vencimiento),av=alarmaVenc(dv);
+    return'<div class="ranking-row"><span class="ranking-num">'+(i+1)+'</span><span class="ranking-name">'+p.nombre+'</span><span class="ranking-val"><span class="badge '+(av?av.cls:'badge-ok')+'" style="font-size:10px">'+(av?av.label:'OK')+'</span> '+dv+'d</span></div>';
+  }).join(''):'<div style="color:var(--muted);font-size:13px">Ninguno vence en 30 días</div>';
+
+  // Bajo mínimo
+  var bajoMin=lista.filter(function(p){return p.stockmin&&Number(p.stock)<=Number(p.stockmin);});
+  document.getElementById('st-bajo-minimo').innerHTML=bajoMin.length?bajoMin.map(function(p,i){
+    return'<div class="ranking-row"><span class="ranking-num">'+(i+1)+'</span><span class="ranking-name">'+p.nombre+'</span><span class="ranking-val">'+p.stock+' / mín '+p.stockmin+'</span></div>';
+  }).join(''):'<div style="color:var(--muted);font-size:13px">Todo sobre el mínimo</div>';
+}
+
+// RENDER HISTORIAL
+function renderHistorial(){
+  var lista=Object.entries(movimientos).map(function(e){return Object.assign({_key:e[0]},e[1]);}).sort(function(a,b){return (b.ts||0)-(a.ts||0);});
+  var tbody=document.getElementById('tbody-mov'),empty=document.getElementById('empty-mov');
+  if(!lista.length){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  tbody.innerHTML=lista.map(function(m){
+    var p=productos[m.productoKey];var nombre=p?p.nombre:(m.productoNombre||'—');
+    var cls={'venta':'mov-venta','ingreso':'mov-ingreso','ajuste':'mov-ajuste','merma':'mov-merma'}[m.tipo]||'';
+    var labels={'venta':'Venta','ingreso':'Ingreso','ajuste':'Ajuste','merma':'Merma'};
+    var total=m.precio&&m.cantidad?formatP(m.precio*m.cantidad):'—';
+    return'<tr><td>'+formatF(m.fecha)+'</td><td style="font-weight:500">'+nombre+'</td><td><span class="mov-tipo '+cls+'">'+(labels[m.tipo]||m.tipo)+'</span></td><td style="text-align:center">'+(m.tipo==='venta'||m.tipo==='merma'?'-':'+')+(m.cantidad||0)+'</td><td>'+total+'</td><td style="font-size:12px;color:var(--muted)">'+(m.nota||'—')+'</td></tr>';
+  }).join('');
+}
+
+// POBLAR SELECT PRODUCTO EN MOVIMIENTOS
+function poblarSelectProducto(){
+  var sel=document.getElementById('m-producto');
+  var val=sel.value;
+  sel.innerHTML='<option value="">Seleccionar...</option>';
+  getLista().sort(function(a,b){return a.nombre.localeCompare(b.nombre);}).forEach(function(p){
+    sel.innerHTML+='<option value="'+p._key+'"'+(p._key===val?' selected':'')+'>'+p.nombre+'</option>';
+  });
+}
+
+// VER DETALLE
+window.verDetalle=function(key){
+  var p=productos[key];if(!p)return;
+  var dd=diasDesde(p.compra),ad=alarmaDep(dd);
+  var dv=diasHasta(p.vencimiento),av=alarmaVenc(dv);
+  var ap=av?urgencia(ad,av):ad;
+  var precUnit=p.preciobulto&&p.unxbulto?Math.round(p.preciobulto/p.unxbulto):0;
+  var margen=precUnit&&p.precioventa?Math.round(((p.precioventa-precUnit)/precUnit)*100):null;
+
+  document.getElementById('modal-nombre').textContent=p.nombre;
+  document.getElementById('modal-body').innerHTML=
+    '<div class="detail-row"><span class="detail-label">Estado</span><span class="detail-val"><span class="badge '+ap.cls+'">'+ap.label+'</span>'+(p.stockmin&&Number(p.stock)<=Number(p.stockmin)?' <span class="badge badge-reponer">REPONER</span>':'')+'</span></div>'+
+    '<div class="detail-row"><span class="detail-label">Código</span><span class="detail-val">'+(p.codigo||'—')+'</span></div>'+
+    '<div class="detail-row"><span class="detail-label">Tipo / Bulto</span><span class="detail-val">'+(p.tipo||'unidad')+(p.unxbulto?' · '+p.unxbulto+' u/bulto':'')+'</span></div>'+
+    '<div class="detail-row"><span class="detail-label">Proveedor</span><span class="detail-val">'+(p.proveedor||'—')+'</span></div>'+
+    '<div class="detail-row"><span class="detail-label">Lote / Factura</span><span class="detail-val">'+(p.lote||'—')+'</span></div>'+
+    '<div class="detail-row"><span class="detail-label">Ubicación</span><span class="detail-val">'+(p.ubicacion||'—')+'</span></div>'+
+    '<div class="detail-row"><span class="detail-label">Stock actual</span><span class="detail-val" style="color:'+((p.stockmin&&Number(p.stock)<=Number(p.stockmin))?'var(--rojo)':'inherit')+'">'+p.stock+' unidades'+(p.stockmin?' / mín '+p.stockmin:'')+'</span></div>'+
+    '<div class="detail-row"><span class="detail-label">P. compra bulto</span><span class="detail-val">'+formatP(p.preciobulto)+'</span></div>'+
+    '<div class="detail-row"><span class="detail-label">P. compra unitario</span><span class="detail-val">'+(precUnit?formatP(precUnit):'—')+'</span></div>'+
+    '<div class="detail-row"><span class="detail-label">P. venta unitario</span><span class="detail-val">'+(p.precioventa?formatP(p.precioventa)+(margen!==null?' ('+margen+'% margen)':''):'—')+'</span></div>'+
+    '<div class="detail-row"><span class="detail-label">Fecha compra</span><span class="detail-val">'+formatF(p.compra)+'</span></div>'+
+    '<div class="detail-row"><span class="detail-label">Días en depósito</span><span class="detail-val">'+dd+'d <span class="badge '+ad.cls+'" style="font-size:10px">'+ad.label+'</span></span></div>'+
+    (p.vencimiento?'<div class="detail-row"><span class="detail-label">Vencimiento</span><span class="detail-val">'+formatF(p.vencimiento)+(av?' <span class="badge '+av.cls+'" style="font-size:10px">'+av.label+'</span>':'')+'</span></div>':'')+
+    (p.vencimiento&&dv!==null?'<div class="detail-row"><span class="detail-label">Días para vencer</span><span class="detail-val">'+(dv<0?'Vencido hace '+Math.abs(dv)+'d':dv+'d')+'</span></div>':'')+
+    // EDICIÓN RÁPIDA STOCK
+    '<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">'+
+    '<div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:8px">Editar stock</div>'+
+    '<div style="display:flex;gap:8px;align-items:center">'+
+    '<input type="number" id="edit-stock" value="'+p.stock+'" style="width:100px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px">'+
+    '<button class="btn btn-sm btn-primary" onclick="editarStock(\''+key+'\')">Actualizar</button>'+
+    '</div></div>';
+
+  document.getElementById('modal-footer').innerHTML=
+    '<button class="btn btn-danger btn-sm" onclick="eliminar(\''+key+'\');cerrarModal()">🗑 Eliminar</button>'+
+    '<button class="btn btn-sm btn-success" onclick="irAMovimiento(\''+key+'\')">📋 Registrar movimiento</button>'+
+    '<button class="btn btn-sm" onclick="cerrarModal()">Cerrar</button>';
+
+  document.getElementById('modal-overlay').classList.add('open');
+};
+
+window.editarStock=function(key){
+  var val=Number(document.getElementById('edit-stock').value);
+  if(isNaN(val)||val<0){toast('Stock inválido');return;}
+  update(ref(db,'productos/'+key),{stock:val});
+  toast('✓ Stock actualizado');
+  cerrarModal();
+};
+
+window.irAMovimiento=function(key){
+  cerrarModal();
+  tab('movimientos',document.querySelectorAll('.nav-btn')[2]);
+  setTimeout(function(){document.getElementById('m-producto').value=key;},100);
+};
+
 window.cerrarModal=function(e){if(!e||e.target===document.getElementById('modal-overlay'))document.getElementById('modal-overlay').classList.remove('open');};
 window.eliminar=function(key){var p=productos[key];if(p&&confirm('¿Eliminar '+p.nombre+'?')){remove(ref(db,'productos/'+key));toast('Eliminado');}};
-window.agregarProducto=function(){var nombre=document.getElementById('f-nombre').value.trim(),compra=document.getElementById('f-compra').value,stock=document.getElementById('f-stock').value,precio=document.getElementById('f-precio').value,msg=document.getElementById('msg-form');if(!nombre||!compra||!stock||!precio){msg.className='msg-err';msg.textContent='Completá los campos obligatorios (*)';return;}push(dbRef,{codigo:document.getElementById('f-codigo').value.trim(),nombre:nombre,lote:document.getElementById('f-lote').value.trim(),ubicacion:document.getElementById('f-ubicacion').value.trim(),compra:compra,vencimiento:document.getElementById('f-vencimiento').value,stock:Number(stock),precio:Number(precio),creado:Date.now()});['f-codigo','f-nombre','f-lote','f-ubicacion','f-vencimiento','f-stock','f-precio'].forEach(function(id){document.getElementById(id).value='';});document.getElementById('f-compra').value=new Date().toISOString().split('T')[0];msg.className='msg-ok';msg.textContent='¡Guardado!';toast('✓ Producto guardado en la nube');setTimeout(function(){msg.textContent='';tab('inventario',document.querySelector('.nav-btn'));},800);};
-window.exportCSV=function(){var lista=getLista();if(!lista.length){alert('Sin productos.');return;}var rows=[['Codigo','Nombre','Lote','Ubicacion','Fecha compra','Fecha vencimiento','Stock','Precio','Dias deposito','Dias vencer']];lista.forEach(function(p){rows.push([p.codigo,p.nombre,p.lote,p.ubicacion,p.compra,p.vencimiento||'',p.stock,p.precio,diasDesde(p.compra),p.vencimiento?diasHasta(p.vencimiento):'']);});var csv=rows.map(function(r){return r.map(function(c){return'"'+(c||'').toString().replace(/"/g,'""')+'"';}).join(',');}).join('\n');var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='javicard_'+new Date().toISOString().split('T')[0]+'.csv';a.click();};
-window.filtrar=filtrar;
-window.tab=function(n,b){document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.nav-btn').forEach(function(x){x.classList.remove('active');});document.getElementById('panel-'+n).classList.add('active');b.classList.add('active');};
+
+// AGREGAR PRODUCTO
+window.agregarProducto=function(){
+  var nombre=document.getElementById('f-nombre').value.trim();
+  var compra=document.getElementById('f-compra').value;
+  var stock=document.getElementById('f-stock').value;
+  var preciobulto=document.getElementById('f-preciobulto').value;
+  var unxbulto=document.getElementById('f-unxbulto').value;
+  var msg=document.getElementById('msg-form');
+  if(!nombre||!compra||!stock||!unxbulto){msg.className='msg-err';msg.textContent='Completá los campos obligatorios (*)';return;}
+  push(ref(db,'productos'),{
+    codigo:document.getElementById('f-codigo').value.trim(),
+    nombre:nombre,
+    proveedor:document.getElementById('f-proveedor').value.trim(),
+    lote:document.getElementById('f-lote').value.trim(),
+    ubicacion:document.getElementById('f-ubicacion').value.trim(),
+    tipo:document.getElementById('f-tipo').value,
+    unxbulto:Number(unxbulto),
+    preciobulto:Number(preciobulto)||0,
+    precioventa:Number(document.getElementById('f-precioventa').value)||0,
+    stock:Number(stock),
+    stockmin:Number(document.getElementById('f-stockmin').value)||0,
+    compra:compra,
+    vencimiento:document.getElementById('f-vencimiento').value,
+    creado:Date.now()
+  });
+  ['f-codigo','f-nombre','f-proveedor','f-lote','f-ubicacion','f-unxbulto','f-preciobulto','f-precioventa','f-stock','f-stockmin','f-vencimiento'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('f-compra').value=new Date().toISOString().split('T')[0];
+  document.getElementById('calc-box').style.display='none';
+  msg.className='msg-ok';msg.textContent='¡Guardado!';
+  toast('✓ Producto guardado en la nube');
+  setTimeout(function(){msg.textContent='';tab('inventario',document.querySelector('.nav-btn'));},800);
+};
+
+// REGISTRAR MOVIMIENTO
+window.registrarMovimiento=function(){
+  var key=document.getElementById('m-producto').value;
+  var tipo=document.getElementById('m-tipo').value;
+  var cant=Number(document.getElementById('m-cantidad').value);
+  var precio=Number(document.getElementById('m-precio').value)||0;
+  var fecha=document.getElementById('m-fecha').value;
+  var nota=document.getElementById('m-nota').value.trim();
+  var msg=document.getElementById('msg-mov');
+  if(!key||!cant||!fecha){msg.className='msg-err';msg.textContent='Completá producto, cantidad y fecha';return;}
+  var p=productos[key];if(!p){msg.className='msg-err';msg.textContent='Producto no encontrado';return;}
+
+  // Calcular nuevo stock
+  var stockActual=Number(p.stock)||0;
+  var nuevoStock=stockActual;
+  if(tipo==='venta'||tipo==='merma') nuevoStock=Math.max(0,stockActual-cant);
+  else if(tipo==='ingreso') nuevoStock=stockActual+cant;
+  else if(tipo==='ajuste') nuevoStock=cant;
+
+  // Si no hay precio, usar el unitario del producto
+  var precioUsado=precio||(p.preciobulto&&p.unxbulto?Math.round(p.preciobulto/p.unxbulto):0);
+
+  // Guardar movimiento
+  push(ref(db,'movimientos'),{
+    productoKey:key,
+    productoNombre:p.nombre,
+    tipo:tipo,
+    cantidad:tipo==='ajuste'?Math.abs(nuevoStock-stockActual):cant,
+    precio:precioUsado,
+    fecha:fecha,
+    nota:nota,
+    stockAntes:stockActual,
+    stockDespues:nuevoStock,
+    ts:Date.now()
+  });
+
+  // Actualizar stock
+  update(ref(db,'productos/'+key),{stock:nuevoStock});
+
+  ['m-cantidad','m-precio','m-nota'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('m-cantidad').value='';
+  document.getElementById('calc-mov').style.display='none';
+  msg.className='msg-ok';msg.textContent='¡Movimiento registrado! Stock: '+stockActual+' → '+nuevoStock;
+  toast('✓ Movimiento guardado');
+  setTimeout(function(){msg.textContent='';},3000);
+};
+
+// EXPORT CSV
+window.exportCSV=function(){
+  var lista=getLista();
+  if(!lista.length){alert('Sin productos.');return;}
+  var rows=[['Codigo','Nombre','Tipo','Unid/Bulto','Proveedor','Lote','Ubicacion','Stock','StockMin','P.Bulto','P.Venta','Fecha compra','Vencimiento','Dias deposito','Dias vencer']];
+  lista.forEach(function(p){rows.push([p.codigo,p.nombre,p.tipo,p.unxbulto,p.proveedor,p.lote,p.ubicacion,p.stock,p.stockmin,p.preciobulto,p.precioventa,p.compra,p.vencimiento||'',diasDesde(p.compra),p.vencimiento?diasHasta(p.vencimiento):'']);});
+  var csv=rows.map(function(r){return r.map(function(c){return'"'+(c||'').toString().replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='javicard_'+new Date().toISOString().split('T')[0]+'.csv';a.click();
+};
+
+// TABS
+window.tab=function(n,b){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.nav-btn').forEach(function(x){x.classList.remove('active');});
+  document.getElementById('panel-'+n).classList.add('active');
+  if(b)b.classList.add('active');
+  if(n==='estadisticas')renderEstadisticas();
+  if(n==='movimientos')poblarSelectProducto();
+};
+
+window.innerTab=function(n,b){
+  document.getElementById('inner-registrar').style.display=n==='registrar'?'block':'none';
+  document.getElementById('inner-historial').style.display=n==='historial'?'block':'none';
+  document.querySelectorAll('.inner-tab').forEach(function(x){x.classList.remove('active');});
+  b.classList.add('active');
+  if(n==='historial')renderHistorial();
+};
+
+// INIT
 document.getElementById('f-compra').value=new Date().toISOString().split('T')[0];
+document.getElementById('m-fecha').value=new Date().toISOString().split('T')[0];
 </script>
 </body>
 </html>
