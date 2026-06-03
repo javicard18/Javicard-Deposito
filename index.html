@@ -7,12 +7,11 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --verde:#27500A;--verde-bg:#EAF3DE;--verde-borde:#3B6D11;
-  --amarillo:#633806;--amarillo-bg:#FAEEDA;--amarillo-borde:#854F0B;
-  --naranja:#712B13;--naranja-bg:#FAECE7;--naranja-borde:#993C1D;
-  --rojo:#791F1F;--rojo-bg:#FCEBEB;--rojo-borde:#A32D2D;
-  --violeta:#3C3489;--violeta-bg:#EEEDFE;--violeta-borde:#534AB7;
-  --gris:#444441;--gris-bg:#F1EFE8;--gris-borde:#B4B2A9;
+  --verde:#27500A;--verde-bg:#EAF3DE;
+  --amarillo:#633806;--amarillo-bg:#FAEEDA;
+  --naranja:#712B13;--naranja-bg:#FAECE7;
+  --rojo:#791F1F;--rojo-bg:#FCEBEB;
+  --violeta:#3C3489;--violeta-bg:#EEEDFE;
   --bg:#f8f7f5;--surface:#fff;--border:#e0ddd8;--text:#1a1a18;--muted:#6b6b67;
   --radius:10px;--radius-sm:6px;
 }
@@ -22,6 +21,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .logo span{color:#D85A30}
 .header-right{display:flex;align-items:center;gap:8px}
 .badge-alerta{background:var(--rojo-bg);color:var(--rojo);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;min-width:24px;text-align:center}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#ccc;display:inline-block;margin-right:4px}
+.sync-dot.ok{background:#4CAF50}
+.sync-dot.err{background:#f44336}
+.sync-dot.loading{background:#FF9800;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 .nav{background:var(--surface);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
 .nav-btn{flex:none;padding:12px 18px;font-size:13px;font-weight:500;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
@@ -97,6 +101,8 @@ tr:hover td{background:#fafaf8}
 .detail-label{color:var(--muted);font-size:12px}
 .detail-val{font-weight:500;text-align:right;max-width:60%}
 .modal-footer{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1a1a18;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:300;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.toast.show{opacity:1}
 @media(max-width:600px){
   .metrics{grid-template-columns:repeat(2,1fr)}
   .form-grid{grid-template-columns:1fr}
@@ -105,8 +111,6 @@ tr:hover td{background:#fafaf8}
   .metric-val{font-size:18px}
   .search-wrap{flex-direction:column}
   select{width:100%}
-}
-@media(max-width:600px){
   .col-lote,.col-precio,.col-ubicacion{display:none}
 }
 </style>
@@ -115,6 +119,7 @@ tr:hover td{background:#fafaf8}
 <div class="header">
   <div class="logo">Javi<span>card</span> <span style="font-weight:400;font-size:13px;color:var(--muted)">Depósito</span></div>
   <div class="header-right">
+    <span id="sync-status"><span class="sync-dot loading" id="sync-dot"></span><span id="sync-text" style="font-size:11px;color:var(--muted)">Conectando...</span></span>
     <span class="badge-alerta" id="hdr-alarmas">0</span>
     <button class="btn btn-sm" onclick="exportCSV()">⬇ CSV</button>
   </div>
@@ -180,44 +185,20 @@ tr:hover td{background:#fafaf8}
   <div class="form-card">
     <div class="form-section-title">Identificación</div>
     <div class="form-grid">
-      <div class="form-group">
-        <label>Código de barras *</label>
-        <input type="text" id="f-codigo" placeholder="Ej: 7790303000017" inputmode="numeric">
-      </div>
-      <div class="form-group">
-        <label>Nombre del producto *</label>
-        <input type="text" id="f-nombre" placeholder="Ej: Quilmes Clásica 1L">
-      </div>
-      <div class="form-group">
-        <label>Lote / N° factura</label>
-        <input type="text" id="f-lote" placeholder="Ej: FAC-0042">
-      </div>
-      <div class="form-group">
-        <label>Ubicación en depósito</label>
-        <input type="text" id="f-ubicacion" placeholder="Ej: Isla A3, Pallets C2">
-      </div>
+      <div class="form-group"><label>Código de barras *</label><input type="text" id="f-codigo" placeholder="Ej: 7790303000017" inputmode="numeric"></div>
+      <div class="form-group"><label>Nombre del producto *</label><input type="text" id="f-nombre" placeholder="Ej: Quilmes Clásica 1L"></div>
+      <div class="form-group"><label>Lote / N° factura</label><input type="text" id="f-lote" placeholder="Ej: FAC-0042"></div>
+      <div class="form-group"><label>Ubicación en depósito</label><input type="text" id="f-ubicacion" placeholder="Ej: Isla A3, Pallets C2"></div>
     </div>
     <div class="form-section-title">Fechas</div>
     <div class="form-grid">
-      <div class="form-group">
-        <label>Fecha de compra *</label>
-        <input type="date" id="f-compra">
-      </div>
-      <div class="form-group">
-        <label>Fecha de vencimiento</label>
-        <input type="date" id="f-vencimiento">
-      </div>
+      <div class="form-group"><label>Fecha de compra *</label><input type="date" id="f-compra"></div>
+      <div class="form-group"><label>Fecha de vencimiento</label><input type="date" id="f-vencimiento"></div>
     </div>
     <div class="form-section-title">Stock y precio</div>
     <div class="form-grid">
-      <div class="form-group">
-        <label>Stock (unidades) *</label>
-        <input type="number" id="f-stock" placeholder="Ej: 24" min="0" inputmode="numeric">
-      </div>
-      <div class="form-group">
-        <label>Precio de compra ($) *</label>
-        <input type="number" id="f-precio" placeholder="Ej: 1500" min="0" inputmode="decimal">
-      </div>
+      <div class="form-group"><label>Stock (unidades) *</label><input type="number" id="f-stock" placeholder="Ej: 24" min="0" inputmode="numeric"></div>
+      <div class="form-group"><label>Precio de compra ($) *</label><input type="number" id="f-precio" placeholder="Ej: 1500" min="0" inputmode="decimal"></div>
     </div>
     <div class="form-actions">
       <button class="btn btn-primary" onclick="agregarProducto()">✓ Agregar producto</button>
@@ -226,9 +207,7 @@ tr:hover td{background:#fafaf8}
   </div>
 </div>
 <div class="panel" id="panel-alarmas">
-  <div id="alarmas-container">
-    <div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">Sin alarmas activas.</div></div>
-  </div>
+  <div id="alarmas-container"><div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">Sin alarmas activas.</div></div></div>
 </div>
 <div class="panel" id="panel-leyenda">
   <div class="leyenda-grid">
@@ -249,7 +228,7 @@ tr:hover td{background:#fafaf8}
     </div>
   </div>
   <div style="margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;font-size:13px;color:var(--muted);line-height:1.6">
-    <strong style="color:var(--text)">Nota:</strong> Los datos se guardan automáticamente en tu navegador. Exportá a CSV para backup o para abrir en Excel.
+    <strong style="color:var(--text)">Sincronización:</strong> Los datos se guardan en Firebase. Cualquier cambio desde el celu se ve en la PC automáticamente.
   </div>
 </div>
 <div class="modal-overlay" id="modal-overlay" onclick="cerrarModal(event)">
@@ -265,89 +244,39 @@ tr:hover td{background:#fafaf8}
     </div>
   </div>
 </div>
-<script>
-var productos=[];
+<div class="toast" id="toast"></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, push, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const firebaseConfig={apiKey:"AIzaSyCeHIwunMK18soUCI2xTKxsF3VvySud3tE",authDomain:"javicard-deposito.firebaseapp.com",databaseURL:"https://javicard-deposito-default-rtdb.firebaseio.com",projectId:"javicard-deposito",storageBucket:"javicard-deposito.firebasestorage.app",messagingSenderId:"276610499069",appId:"1:276610499069:web:2f888100e183fb15e95994"};
+const app=initializeApp(firebaseConfig);
+const db=getDatabase(app);
+const dbRef=ref(db,'productos');
+var productos={};
 var HOY=new Date();HOY.setHours(0,0,0,0);
-function cargarDatos(){try{productos=JSON.parse(localStorage.getItem('jc_v1')||'[]');}catch(e){productos=[];}actualizar();}
-function guardar(){localStorage.setItem('jc_v1',JSON.stringify(productos));actualizar();}
+function setSyncStatus(e){var d=document.getElementById('sync-dot'),t=document.getElementById('sync-text');d.className='sync-dot '+e;t.textContent=e==='ok'?'Sincronizado':e==='err'?'Sin conexión':'Conectando...';}
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2000);}
+onValue(dbRef,function(s){productos={};if(s.exists())productos=s.val();setSyncStatus('ok');actualizar();},function(){setSyncStatus('err');});
 function diasDesde(f){var d=new Date(f+'T00:00:00');return Math.floor((HOY-d)/86400000);}
 function diasHasta(f){if(!f)return null;var d=new Date(f+'T00:00:00');return Math.floor((d-HOY)/86400000);}
 function alarmaDep(dd){if(dd<15)return{tipo:'ok',label:'OK',cls:'badge-ok'};if(dd<30)return{tipo:'oferta-dep',label:'OFERTA',cls:'badge-oferta'};if(dd<45)return{tipo:'remate-dep',label:'REMATE',cls:'badge-remate'};return{tipo:'costo-dep',label:'AL COSTO',cls:'badge-costo'};}
 function alarmaVenc(dv){if(dv===null)return null;if(dv<0)return{tipo:'vencido',label:'VENCIDO',cls:'badge-vencido'};if(dv>30)return{tipo:'ok-venc',label:'OK',cls:'badge-ok'};if(dv>15)return{tipo:'oferta-venc',label:'OFERTA',cls:'badge-oferta'};if(dv>10)return{tipo:'remate-venc',label:'REMATE',cls:'badge-remate'};if(dv>5)return{tipo:'costo-venc',label:'AL COSTO',cls:'badge-costo'};return{tipo:'bajo-costo',label:'BAJO COSTO',cls:'badge-bajo'};}
-function urgencia(ad,av){var order={vencido:0,'bajo-costo':1,'costo-dep':2,'costo-venc':2,'remate-dep':3,'remate-venc':3,'oferta-dep':4,'oferta-venc':4,'ok-venc':5,ok:6};var ua=order[ad.tipo]||6,uv=av?(order[av.tipo]||6):6;return ua<=uv?ad:av;}
+function urgencia(ad,av){var o={vencido:0,'bajo-costo':1,'costo-dep':2,'costo-venc':2,'remate-dep':3,'remate-venc':3,'oferta-dep':4,'oferta-venc':4,'ok-venc':5,ok:6};return(o[ad.tipo]||6)<=(o[av.tipo]||6)?ad:av;}
 function formatF(s){if(!s)return'—';var p=s.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
 function formatP(n){if(!n&&n!==0)return'—';return'$'+Number(n).toLocaleString('es-AR');}
-function actualizar(){
-  var total=0,dep=0,venc=0,stock=0;
-  productos.forEach(function(p){total++;stock+=Number(p.stock)||0;var dd=diasDesde(p.compra),ad=alarmaDep(dd);var dv=diasHasta(p.vencimiento),av=alarmaVenc(dv);if(ad.tipo!=='ok')dep++;if(av&&av.tipo!=='ok-venc')venc++;});
-  document.getElementById('m-total').textContent=total;
-  document.getElementById('m-dep').textContent=dep;
-  document.getElementById('m-venc').textContent=venc;
-  document.getElementById('m-stock').textContent=stock;
-  var tot=dep+venc;
-  document.getElementById('hdr-alarmas').textContent=tot;
-  document.getElementById('nav-badge').textContent=tot;
-  filtrar();renderAlarmas();
-}
-function filtrar(){
-  var q=(document.getElementById('busqueda').value||'').toLowerCase();
-  var f=document.getElementById('filtro').value;
-  var lista=productos.filter(function(p){var mq=!q||p.codigo.toLowerCase().includes(q)||p.nombre.toLowerCase().includes(q);if(!mq)return false;if(!f)return true;var dd=diasDesde(p.compra),ad=alarmaDep(dd);var dv=diasHasta(p.vencimiento),av=alarmaVenc(dv);if(f==='ok')return ad.tipo==='ok'&&(!av||av.tipo==='ok-venc');if(f===ad.tipo)return true;if(av&&f===av.tipo)return true;return false;});
-  renderTabla(lista);
-}
-function renderTabla(lista){
-  var tbody=document.getElementById('tbody');
-  var empty=document.getElementById('empty-inv');
-  if(!lista||!lista.length){tbody.innerHTML='';empty.style.display='block';return;}
-  empty.style.display='none';
-  tbody.innerHTML=lista.map(function(p){var idx=productos.indexOf(p);var dd=diasDesde(p.compra),ad=alarmaDep(dd);var dv=diasHasta(p.vencimiento),av=alarmaVenc(dv);var vencHTML=av?(av.tipo==='vencido'?'<span class="badge badge-vencido">VENCIDO</span>':'<span class="badge '+av.cls+'">'+av.label+'</span> <span style="color:var(--muted);font-size:11px">'+dv+'d</span>'):'<span style="color:var(--muted)">—</span>';return'<tr onclick="verDetalle('+idx+')" style="cursor:pointer"><td><div class="prod-name">'+p.nombre+'</div><div class="prod-sub">'+p.codigo+'</div></td><td style="font-size:11px;color:var(--muted)" class="col-lote">'+(p.lote||'—')+'</td><td style="text-align:center;font-weight:600">'+p.stock+'</td><td style="text-align:center"><span class="badge '+ad.cls+'">'+ad.label+'</span><br><span style="font-size:11px;color:var(--muted)">'+dd+'d</span></td><td style="text-align:center">'+vencHTML+'</td><td class="col-precio" style="font-size:12px">'+formatP(p.precio)+'</td><td class="col-ubicacion" style="font-size:12px;color:var(--muted)">'+(p.ubicacion||'—')+'</td><td><button class="btn btn-danger btn-sm" onclick="event.stopPropagation();eliminar('+idx+')">🗑</button></td></tr>';}).join('');
-}
-function renderAlarmas(){
-  var c=document.getElementById('alarmas-container');
-  var grupos={};
-  var config={'vencido':{label:'🚨 Producto vencido — retirar',bg:'#500',tc:'#fff'},'bajo-costo':{label:'🔴 Vender BAJO el costo (vence en ≤5 días)',bg:'var(--violeta-bg)',tc:'var(--violeta)'},'costo-venc':{label:'🔴 Vender al costo (vence en 6–10 días)',bg:'var(--rojo-bg)',tc:'var(--rojo)'},'costo-dep':{label:'🔴 Vender al costo (45+ días en depósito)',bg:'var(--rojo-bg)',tc:'var(--rojo)'},'remate-venc':{label:'🟠 Rematar (vence en 11–15 días)',bg:'var(--naranja-bg)',tc:'var(--naranja)'},'remate-dep':{label:'🟠 Rematar (30–44 días en depósito)',bg:'var(--naranja-bg)',tc:'var(--naranja)'},'oferta-venc':{label:'🟡 Hacer oferta (vence en 16–30 días)',bg:'var(--amarillo-bg)',tc:'var(--amarillo)'},'oferta-dep':{label:'🟡 Hacer oferta (15–29 días en depósito)',bg:'var(--amarillo-bg)',tc:'var(--amarillo)'}};
-  var orden=['vencido','bajo-costo','costo-venc','costo-dep','remate-venc','remate-dep','oferta-venc','oferta-dep'];
-  productos.forEach(function(p){var dd=diasDesde(p.compra),ad=alarmaDep(dd);var dv=diasHasta(p.vencimiento),av=alarmaVenc(dv);function push(tipo,detalle){if(!grupos[tipo])grupos[tipo]=[];grupos[tipo].push({p:p,detalle:detalle});}if(ad.tipo!=='ok')push(ad.tipo,dd+'d en depósito');if(av&&av.tipo!=='ok-venc'){var det=av.tipo==='vencido'?'Vencido hace '+(Math.abs(dv))+'d':'Vence en '+dv+'d';push(av.tipo,det);}});
-  var tiposConDatos=orden.filter(function(t){return grupos[t]&&grupos[t].length;});
-  if(!tiposConDatos.length){c.innerHTML='<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">Sin alarmas activas. Todo en orden.</div></div>';return;}
-  c.innerHTML=tiposConDatos.map(function(tipo){var cfg=config[tipo];var items=grupos[tipo];return'<div class="alarm-section"><div class="alarm-header" style="background:'+cfg.bg+';color:'+cfg.tc+'">'+cfg.label+' <span style="margin-left:auto;font-size:12px;opacity:0.8">'+items.length+' producto'+(items.length>1?'s':'')+'</span></div><div class="alarm-items">'+items.map(function(it){return'<div class="alarm-item"><div><div class="alarm-name">'+it.p.nombre+'</div><div class="alarm-detail">'+it.p.codigo+(it.p.lote?' · '+it.p.lote:'')+(it.p.ubicacion?' · '+it.p.ubicacion:'')+'</div></div><div class="alarm-right"><div>Stock: <strong>'+it.p.stock+'</strong></div><div>'+it.detalle+'</div></div></div>';}).join('')+'</div></div>';}).join('');
-}
-var modalIdx=-1;
-function verDetalle(idx){
-  var p=productos[idx];if(!p)return;modalIdx=idx;
-  var dd=diasDesde(p.compra),ad=alarmaDep(dd);var dv=diasHasta(p.vencimiento),av=alarmaVenc(dv);
-  var alarmaPrincipal=av?urgencia(ad,av):ad;
-  document.getElementById('modal-nombre').textContent=p.nombre;
-  document.getElementById('modal-body').innerHTML='<div class="detail-row"><span class="detail-label">Estado</span><span class="detail-val"><span class="badge '+alarmaPrincipal.cls+'">'+alarmaPrincipal.label+'</span></span></div><div class="detail-row"><span class="detail-label">Código de barras</span><span class="detail-val">'+(p.codigo||'—')+'</span></div><div class="detail-row"><span class="detail-label">Lote / Factura</span><span class="detail-val">'+(p.lote||'—')+'</span></div><div class="detail-row"><span class="detail-label">Ubicación</span><span class="detail-val">'+(p.ubicacion||'—')+'</span></div><div class="detail-row"><span class="detail-label">Stock</span><span class="detail-val">'+p.stock+' unidades</span></div><div class="detail-row"><span class="detail-label">Precio de compra</span><span class="detail-val">'+formatP(p.precio)+'</span></div><div class="detail-row"><span class="detail-label">Fecha de compra</span><span class="detail-val">'+formatF(p.compra)+'</span></div><div class="detail-row"><span class="detail-label">Días en depósito</span><span class="detail-val">'+dd+'d <span class="badge '+ad.cls+'" style="font-size:10px">'+ad.label+'</span></span></div>'+(p.vencimiento?'<div class="detail-row"><span class="detail-label">Vencimiento</span><span class="detail-val">'+formatF(p.vencimiento)+(av?' <span class="badge '+av.cls+'" style="font-size:10px">'+av.label+'</span>':'')+'</span></div>':'')+(p.vencimiento&&dv!==null?'<div class="detail-row"><span class="detail-label">Días para vencer</span><span class="detail-val">'+(dv<0?'Vencido hace '+Math.abs(dv)+'d':dv+'d')+'</span></div>':'');
-  document.getElementById('modal-eliminar-btn').onclick=function(){if(confirm('¿Eliminar '+p.nombre+'?')){productos.splice(idx,1);guardar();cerrarModal();}};
-  document.getElementById('modal-overlay').classList.add('open');
-}
-function cerrarModal(e){if(!e||e.target===document.getElementById('modal-overlay'))document.getElementById('modal-overlay').classList.remove('open');}
-function agregarProducto(){
-  var nombre=document.getElementById('f-nombre').value.trim();
-  var compra=document.getElementById('f-compra').value;
-  var stock=document.getElementById('f-stock').value;
-  var precio=document.getElementById('f-precio').value;
-  var msg=document.getElementById('msg-form');
-  if(!nombre||!compra||!stock||!precio){msg.className='msg-err';msg.textContent='Completá los campos obligatorios (*)';return;}
-  productos.unshift({codigo:document.getElementById('f-codigo').value.trim(),nombre:nombre,lote:document.getElementById('f-lote').value.trim(),ubicacion:document.getElementById('f-ubicacion').value.trim(),compra:compra,vencimiento:document.getElementById('f-vencimiento').value,stock:Number(stock),precio:Number(precio)});
-  guardar();
-  ['f-codigo','f-nombre','f-lote','f-ubicacion','f-vencimiento','f-stock','f-precio'].forEach(function(id){document.getElementById(id).value='';});
-  document.getElementById('f-compra').value=new Date().toISOString().split('T')[0];
-  msg.className='msg-ok';msg.textContent='¡Producto agregado!';
-  setTimeout(function(){msg.textContent='';tab('inventario',document.querySelector('.nav-btn'));},800);
-}
-function eliminar(idx){if(confirm('¿Eliminar '+productos[idx].nombre+'?')){productos.splice(idx,1);guardar();}}
-function exportCSV(){
-  if(!productos.length){alert('No hay productos para exportar.');return;}
-  var rows=[['Codigo','Nombre','Lote','Ubicacion','Fecha compra','Fecha vencimiento','Stock','Precio compra','Dias deposito','Dias para vencer']];
-  productos.forEach(function(p){rows.push([p.codigo,p.nombre,p.lote,p.ubicacion,p.compra,p.vencimiento||'',p.stock,p.precio,diasDesde(p.compra),p.vencimiento?diasHasta(p.vencimiento):'']);});
-  var csv=rows.map(function(r){return r.map(function(c){return'"'+(c||'').toString().replace(/"/g,'""')+'"';}).join(',');}).join('\n');
-  var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='javicard_deposito_'+new Date().toISOString().split('T')[0]+'.csv';a.click();
-}
-function tab(nombre,btn){document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});document.getElementById('panel-'+nombre).classList.add('active');btn.classList.add('active');}
+function getLista(){return Object.entries(productos).map(function(e){return Object.assign({_key:e[0]},e[1]);});}
+function actualizar(){var lista=getLista(),total=0,dep=0,venc=0,stock=0;lista.forEach(function(p){total++;stock+=Number(p.stock)||0;var ad=alarmaDep(diasDesde(p.compra));var av=alarmaVenc(diasHasta(p.vencimiento));if(ad.tipo!=='ok')dep++;if(av&&av.tipo!=='ok-venc')venc++;});document.getElementById('m-total').textContent=total;document.getElementById('m-dep').textContent=dep;document.getElementById('m-venc').textContent=venc;document.getElementById('m-stock').textContent=stock;var tot=dep+venc;document.getElementById('hdr-alarmas').textContent=tot;document.getElementById('nav-badge').textContent=tot;filtrar();renderAlarmas();}
+function filtrar(){var q=(document.getElementById('busqueda').value||'').toLowerCase(),f=document.getElementById('filtro').value;var lista=getLista().filter(function(p){var mq=!q||(p.codigo||'').toLowerCase().includes(q)||p.nombre.toLowerCase().includes(q);if(!mq)return false;if(!f)return true;var ad=alarmaDep(diasDesde(p.compra));var av=alarmaVenc(diasHasta(p.vencimiento));if(f==='ok')return ad.tipo==='ok'&&(!av||av.tipo==='ok-venc');if(f===ad.tipo)return true;if(av&&f===av.tipo)return true;return false;});renderTabla(lista);}
+function renderTabla(lista){var tbody=document.getElementById('tbody'),empty=document.getElementById('empty-inv');if(!lista.length){tbody.innerHTML='';empty.style.display='block';return;}empty.style.display='none';tbody.innerHTML=lista.map(function(p){var dd=diasDesde(p.compra),ad=alarmaDep(dd),dv=diasHasta(p.vencimiento),av=alarmaVenc(dv);var vH=av?(av.tipo==='vencido'?'<span class="badge badge-vencido">VENCIDO</span>':'<span class="badge '+av.cls+'">'+av.label+'</span> <span style="color:var(--muted);font-size:11px">'+dv+'d</span>'):'<span style="color:var(--muted)">—</span>';return'<tr onclick="verDetalle(\''+p._key+'\')" style="cursor:pointer"><td><div class="prod-name">'+p.nombre+'</div><div class="prod-sub">'+(p.codigo||'')+'</div></td><td class="col-lote" style="font-size:11px;color:var(--muted)">'+(p.lote||'—')+'</td><td style="text-align:center;font-weight:600">'+p.stock+'</td><td style="text-align:center"><span class="badge '+ad.cls+'">'+ad.label+'</span><br><span style="font-size:11px;color:var(--muted)">'+dd+'d</span></td><td style="text-align:center">'+vH+'</td><td class="col-precio" style="font-size:12px">'+formatP(p.precio)+'</td><td class="col-ubicacion" style="font-size:12px;color:var(--muted)">'+(p.ubicacion||'—')+'</td><td><button class="btn btn-danger btn-sm" onclick="event.stopPropagation();eliminar(\''+p._key+'\')">🗑</button></td></tr>';}).join('');}
+function renderAlarmas(){var c=document.getElementById('alarmas-container'),grupos={};var cfg={'vencido':{label:'🚨 Producto vencido — retirar',bg:'#500',tc:'#fff'},'bajo-costo':{label:'🔴 Vender BAJO el costo (vence ≤5d)',bg:'var(--violeta-bg)',tc:'var(--violeta)'},'costo-venc':{label:'🔴 Vender al costo (vence 6–10d)',bg:'var(--rojo-bg)',tc:'var(--rojo)'},'costo-dep':{label:'🔴 Vender al costo (45+ días depósito)',bg:'var(--rojo-bg)',tc:'var(--rojo)'},'remate-venc':{label:'🟠 Rematar (vence 11–15d)',bg:'var(--naranja-bg)',tc:'var(--naranja)'},'remate-dep':{label:'🟠 Rematar (30–44d depósito)',bg:'var(--naranja-bg)',tc:'var(--naranja)'},'oferta-venc':{label:'🟡 Hacer oferta (vence 16–30d)',bg:'var(--amarillo-bg)',tc:'var(--amarillo)'},'oferta-dep':{label:'🟡 Hacer oferta (15–29d depósito)',bg:'var(--amarillo-bg)',tc:'var(--amarillo)'}};var orden=['vencido','bajo-costo','costo-venc','costo-dep','remate-venc','remate-dep','oferta-venc','oferta-dep'];getLista().forEach(function(p){var dd=diasDesde(p.compra),ad=alarmaDep(dd),dv=diasHasta(p.vencimiento),av=alarmaVenc(dv);function push(t,d){if(!grupos[t])grupos[t]=[];grupos[t].push({p:p,detalle:d});}if(ad.tipo!=='ok')push(ad.tipo,dd+'d en depósito');if(av&&av.tipo!=='ok-venc')push(av.tipo,av.tipo==='vencido'?'Vencido hace '+Math.abs(dv)+'d':'Vence en '+dv+'d');});var tipos=orden.filter(function(t){return grupos[t]&&grupos[t].length;});if(!tipos.length){c.innerHTML='<div class="empty-state"><div class="empty-icon">✅</div><div class="empty-text">Sin alarmas. Todo en orden.</div></div>';return;}c.innerHTML=tipos.map(function(t){var cf=cfg[t],it=grupos[t];return'<div class="alarm-section"><div class="alarm-header" style="background:'+cf.bg+';color:'+cf.tc+'">'+cf.label+' <span style="margin-left:auto;font-size:12px;opacity:0.8">'+it.length+'</span></div><div class="alarm-items">'+it.map(function(x){return'<div class="alarm-item"><div><div class="alarm-name">'+x.p.nombre+'</div><div class="alarm-detail">'+(x.p.codigo||'')+(x.p.lote?' · '+x.p.lote:'')+'</div></div><div class="alarm-right">Stock: <strong>'+x.p.stock+'</strong><br>'+x.detalle+'</div></div>';}).join('')+'</div></div>';}).join('');}
+window.verDetalle=function(key){var p=productos[key];if(!p)return;var dd=diasDesde(p.compra),ad=alarmaDep(dd),dv=diasHasta(p.vencimiento),av=alarmaVenc(dv),ap=av?urgencia(ad,av):ad;document.getElementById('modal-nombre').textContent=p.nombre;document.getElementById('modal-body').innerHTML='<div class="detail-row"><span class="detail-label">Estado</span><span class="detail-val"><span class="badge '+ap.cls+'">'+ap.label+'</span></span></div><div class="detail-row"><span class="detail-label">Código</span><span class="detail-val">'+(p.codigo||'—')+'</span></div><div class="detail-row"><span class="detail-label">Lote</span><span class="detail-val">'+(p.lote||'—')+'</span></div><div class="detail-row"><span class="detail-label">Ubicación</span><span class="detail-val">'+(p.ubicacion||'—')+'</span></div><div class="detail-row"><span class="detail-label">Stock</span><span class="detail-val">'+p.stock+' unidades</span></div><div class="detail-row"><span class="detail-label">Precio compra</span><span class="detail-val">'+formatP(p.precio)+'</span></div><div class="detail-row"><span class="detail-label">Fecha compra</span><span class="detail-val">'+formatF(p.compra)+'</span></div><div class="detail-row"><span class="detail-label">Días en depósito</span><span class="detail-val">'+dd+'d <span class="badge '+ad.cls+'" style="font-size:10px">'+ad.label+'</span></span></div>'+(p.vencimiento?'<div class="detail-row"><span class="detail-label">Vencimiento</span><span class="detail-val">'+formatF(p.vencimiento)+(av?' <span class="badge '+av.cls+'" style="font-size:10px">'+av.label+'</span>':'')+'</span></div>':'')+( p.vencimiento&&dv!==null?'<div class="detail-row"><span class="detail-label">Días para vencer</span><span class="detail-val">'+(dv<0?'Vencido hace '+Math.abs(dv)+'d':dv+'d')+'</span></div>':'');document.getElementById('modal-eliminar-btn').onclick=function(){if(confirm('¿Eliminar '+p.nombre+'?')){remove(ref(db,'productos/'+key));cerrarModal();toast('Eliminado');}};document.getElementById('modal-overlay').classList.add('open');};
+window.cerrarModal=function(e){if(!e||e.target===document.getElementById('modal-overlay'))document.getElementById('modal-overlay').classList.remove('open');};
+window.eliminar=function(key){var p=productos[key];if(p&&confirm('¿Eliminar '+p.nombre+'?')){remove(ref(db,'productos/'+key));toast('Eliminado');}};
+window.agregarProducto=function(){var nombre=document.getElementById('f-nombre').value.trim(),compra=document.getElementById('f-compra').value,stock=document.getElementById('f-stock').value,precio=document.getElementById('f-precio').value,msg=document.getElementById('msg-form');if(!nombre||!compra||!stock||!precio){msg.className='msg-err';msg.textContent='Completá los campos obligatorios (*)';return;}push(dbRef,{codigo:document.getElementById('f-codigo').value.trim(),nombre:nombre,lote:document.getElementById('f-lote').value.trim(),ubicacion:document.getElementById('f-ubicacion').value.trim(),compra:compra,vencimiento:document.getElementById('f-vencimiento').value,stock:Number(stock),precio:Number(precio),creado:Date.now()});['f-codigo','f-nombre','f-lote','f-ubicacion','f-vencimiento','f-stock','f-precio'].forEach(function(id){document.getElementById(id).value='';});document.getElementById('f-compra').value=new Date().toISOString().split('T')[0];msg.className='msg-ok';msg.textContent='¡Guardado!';toast('✓ Producto guardado en la nube');setTimeout(function(){msg.textContent='';tab('inventario',document.querySelector('.nav-btn'));},800);};
+window.exportCSV=function(){var lista=getLista();if(!lista.length){alert('Sin productos.');return;}var rows=[['Codigo','Nombre','Lote','Ubicacion','Fecha compra','Fecha vencimiento','Stock','Precio','Dias deposito','Dias vencer']];lista.forEach(function(p){rows.push([p.codigo,p.nombre,p.lote,p.ubicacion,p.compra,p.vencimiento||'',p.stock,p.precio,diasDesde(p.compra),p.vencimiento?diasHasta(p.vencimiento):'']);});var csv=rows.map(function(r){return r.map(function(c){return'"'+(c||'').toString().replace(/"/g,'""')+'"';}).join(',');}).join('\n');var a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='javicard_'+new Date().toISOString().split('T')[0]+'.csv';a.click();};
+window.filtrar=filtrar;
+window.tab=function(n,b){document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.nav-btn').forEach(function(x){x.classList.remove('active');});document.getElementById('panel-'+n).classList.add('active');b.classList.add('active');};
 document.getElementById('f-compra').value=new Date().toISOString().split('T')[0];
-cargarDatos();
 </script>
 </body>
 </html>
