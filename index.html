@@ -847,7 +847,7 @@ window.confirmarBoleta=function(){
   boletaItems.forEach(function(item){
     var tot=item.preciobulto?Math.round((item.stock/item.unxbulto)*item.preciobulto):0;
     totalBoleta+=tot;
-    push(prodRef,Object.assign({},item,{lote:factura,proveedor:proveedor,compra:fecha,creado:Date.now(),_id:undefined}));
+    var obj={nombre:item.nombre,codigo:item.codigo||"",tipo:item.tipo||"unidad",ubicacion:item.ubicacion||"",nota:item.nota||"",unxbulto:item.unxbulto||1,preciobulto:item.preciobulto||0,precioventa:item.precioventa||0,stock:item.stock||0,stockmin:item.stockmin||0,vencimiento:item.vencimiento||"",lote:factura,proveedor:proveedor,compra:fecha,creado:Date.now()};push(prodRef,obj);
   });
   push(boletasRef,{factura,proveedor,fecha,total:totalBoleta,productos:boletaItems.length,ts:Date.now()});
   limpiarBoleta();
